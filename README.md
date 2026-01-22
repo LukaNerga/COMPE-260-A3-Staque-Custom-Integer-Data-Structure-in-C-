@@ -1,102 +1,96 @@
-Staque – Custom Integer Data Structure in C++
+# Staque – Stack/Queue Hybrid Data Structure 📚
 
-Author: Luka Nergadze
-Language: C++
+## Project Description
 
-Description
+This project implements a custom **Staque** data structure in **C++** using a **doubly linked list**.
 
-This project implements a custom data structure called Staque that stores integers using a doubly linked list.
+A **Staque** behaves like a mix between a **stack** and a **queue**:
+- **Even numbers** are inserted at the **front**
+- **Odd numbers** are inserted at the **back**
+- Supports flexible removal operations:
+  - Remove last added item (LIFO style from the back)
+  - Remove a specific number of items
+  - Remove only even or only odd items
 
-Insertion rules:
+This demonstrates:
+- Custom data structures
+- Dynamic memory management
+- Copy constructor and assignment operator (Rule of Three)
+- Overloaded methods for different removal behaviors
 
-Even numbers → pushed to the front
+---
 
-Odd numbers → pushed to the back
+## Data Structure Overview
 
-Removal rules:
+### Node
 
-Always follows LIFO (Last In, First Out)
+Each node in the linked list stores:
 
-Three removal methods:
+- `data` – integer value
+- `next` – pointer to the next node
+- `prev` – pointer to the previous node
 
-remove() – removes the last-added item
+The nodes are connected in a **doubly linked list**, allowing efficient traversal and removal from both ends.
 
-remove(int count) – removes a specified number of items from the back
+---
 
-remove(int count, bool removeEven) – removes a specified number of even or odd items
+### Staque Class
 
-The class also includes:
+The `Staque` class manages the linked list and provides the main functionality.
 
-Copy constructor – deep copy of Staque
+#### Internal Pointers
 
-Overloaded assignment operator – ensures safe assignment
+- `front` – points to the first node (head)
+- `back` – points to the last node (tail)
 
-Destructor – prevents memory leaks
+#### Key Operations
 
-How to Use
+1. **Constructor**
+   - Initializes an empty Staque (`front = nullptr`, `back = nullptr`).
 
-Clone or download the repository.
+2. **Copy Constructor**
+   - Creates a **deep copy** of another `Staque`.
+   - Iterates through the source list and inserts copies of all elements.
 
-Compile the program:
+3. **Destructor**
+   - Traverses from `front` to `back` and deletes every node.
+   - Frees all dynamically allocated memory.
 
-g++ -o staque main.cpp
+4. **Assignment Operator (`operator=`)**
+   - Handles self-assignment safely.
+   - Clears the existing list.
+   - Deep copies the contents of another `Staque`.
+   - Prevents memory leaks and double frees.
 
+---
 
-Run the program:
+## Insertion Logic
 
-./staque
+### `insert(int value)`
 
+Insertion is based on **parity**:
 
-The program demonstrates:
+- If `value` is **even**:
+  - Insert at the **front**.
+  - If the list is empty, both `front` and `back` point to the new node.
+  - Otherwise, the new node becomes the new `front`.
 
-Inserting integers
+- If `value` is **odd**:
+  - Insert at the **back**.
+  - If the list is empty, both `front` and `back` point to the new node.
+  - Otherwise, the new node is appended after `back` and becomes the new `back`.
 
-Displaying the Staque
+This creates a structure where:
+- Evens accumulate towards the front.
+- Odds accumulate towards the back.
 
-Performing multiple types of removals
+---
 
-Using the copy constructor and assignment operator
+## Display Logic
 
-Example Output
+### `display() const`
 
-Initial Staque:
+Prints the Staque from **front to back** in the format:
 
-Insert sequence: 1, 3, 2, 4, 6, 8, 9
-(front) 8 6 4 2 1 3 9 (back)
-
-
-After removing 2 even and 1 odd numbers (LIFO):
-
-(front) 4 2 1 3 (back)
-
-
-New Staque with different inputs (5, 12, 7, 18, 3):
-
-New Staque s2: (front) 18 12 5 7 3 (back)
-After removals: (front) 18 5 7 (back)
-
-
-Testing Copy Constructor and Assignment Operator:
-
-Copied Staque s3 from s1: (front) 4 2 1 3 (back)
-Assigned Staque s3 from s2: (front) 18 5 7 (back)
-
-Files
-
-main.cpp – contains Staque class and the driver program testing all functionality
-
-Features
-
-Doubly linked list implementation for flexible insertion and deletion
-
-Dynamic memory management with deep copying
-
-Multiple removal methods for flexible LIFO-based operations
-
-Robust handling of even and odd numbers
-
-Supports multiple test scenarios
-
-License
-
-This project is open-source and free to use for learning and academic purposes.
+```text
+(front) 2 4 6 9 11 (back)
